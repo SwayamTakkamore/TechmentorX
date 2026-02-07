@@ -112,6 +112,7 @@ export default function StudentProfilePage() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn-ghost px-2 py-1"
+                    aria-label="GitHub profile"
                   >
                     <Github className="h-4 w-4" />
                   </a>
@@ -122,6 +123,7 @@ export default function StudentProfilePage() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn-ghost px-2 py-1"
+                    aria-label="LinkedIn profile"
                   >
                     <Linkedin className="h-4 w-4" />
                   </a>

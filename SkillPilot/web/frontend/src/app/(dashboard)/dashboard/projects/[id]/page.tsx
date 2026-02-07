@@ -285,6 +285,8 @@ export default function ProjectWorkspacePage() {
               <button
                 onClick={() => setChatOpen(false)}
                 className="rounded-lg p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-600"
+                type="button"
+                aria-label="Close chat"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -355,6 +357,8 @@ export default function ProjectWorkspacePage() {
                   onClick={sendMessage}
                   disabled={!chatInput.trim() || chatLoading}
                   className="btn-primary px-3"
+                  type="button"
+                  aria-label="Send message"
                 >
                   <Send className="h-4 w-4" />
                 </button>

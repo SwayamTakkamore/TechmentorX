@@ -1,9 +1,11 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
-import dotenv from 'dotenv';
 import { connectDB } from './utils/database';
 import { errorHandler } from './middleware/errorHandler';
 import authRoutes from './routes/auth.routes';
@@ -13,8 +15,6 @@ import chatRoutes from './routes/chat.routes';
 import portfolioRoutes from './routes/portfolio.routes';
 import recruiterRoutes from './routes/recruiter.routes';
 import userRoutes from './routes/user.routes';
-
-dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;

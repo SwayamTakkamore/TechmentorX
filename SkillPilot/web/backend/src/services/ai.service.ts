@@ -1,8 +1,22 @@
 import OpenAI from 'openai';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+let _client: OpenAI | null = null;
+
+function getClient(): OpenAI {
+  if (!_client) {
+    _client = new OpenAI({
+      baseURL: 'https://openrouter.ai/api/v1',
+      apiKey: process.env.OPENROUTER_API_KEY,
+      defaultHeaders: {
+        'HTTP-Referer': process.env.FRONTEND_URL || 'http://localhost:3000',
+        'X-Title': 'SkillPilot',
+      },
+    });
+  }
+  return _client;
+}
+
+const getModel = () => process.env.OPENROUTER_MODEL || 'google/gemini-2.0-flash-001';
 
 export interface GeneratedProject {
   title: string;
@@ -50,17 +64,21 @@ Generate 5-8 tasks that are progressive and realistic.
 Make the project practical, interesting, and portfolio-worthy.
 Focus on real-world skills that recruiters value.`;
 
-    const response = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages: [{ role: 'user', content: prompt }],
+    const response = await getClient().chat.completions.create({
+      model: getModel(),
+      messages: [
+        { role: 'system', content: 'You are a helpful assistant. Always respond with valid JSON only, no markdown formatting.' },
+        { role: 'user', content: prompt },
+      ],
       temperature: 0.8,
-      response_format: { type: 'json_object' },
     });
 
     const content = response.choices[0]?.message?.content;
     if (!content) throw new Error('No response from AI');
 
-    return JSON.parse(content) as GeneratedProject;
+    // Strip markdown code fences if present
+    const cleaned = content.replace(/```(?:json)?\n?/g, '').trim();
+    return JSON.parse(cleaned) as GeneratedProject;
   }
 
   static async chatWithMentor(
@@ -76,8 +94,8 @@ Be concise, helpful, and encouraging. Provide code examples when relevant.
 Guide the student rather than giving complete solutions.
 Focus on teaching patterns, best practices, and problem-solving skills.`;
 
-    const response = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
+    const response = await getClient().chat.completions.create({
+      model: getModel(),
       messages: [
         { role: 'system', content: systemPrompt },
         ...messages.map((m) => ({ role: m.role as 'user' | 'assistant', content: m.content })),
@@ -117,17 +135,20 @@ Return ONLY valid JSON:
 Make resume bullets quantifiable and action-oriented (start with strong verbs).
 Skills should be specific and technical.`;
 
-    const response = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages: [{ role: 'user', content: prompt }],
+    const response = await getClient().chat.completions.create({
+      model: getModel(),
+      messages: [
+        { role: 'system', content: 'You are a helpful assistant. Always respond with valid JSON only, no markdown formatting.' },
+        { role: 'user', content: prompt },
+      ],
       temperature: 0.6,
-      response_format: { type: 'json_object' },
     });
 
     const content = response.choices[0]?.message?.content;
     if (!content) throw new Error('No response from AI');
 
-    return JSON.parse(content) as PortfolioData;
+    const cleaned = content.replace(/```(?:json)?\n?/g, '').trim();
+    return JSON.parse(cleaned) as PortfolioData;
   }
 
   static async generateSkillScore(
@@ -152,16 +173,19 @@ Return ONLY valid JSON:
   "summary": "2-3 sentence overall assessment"
 }`;
 
-    const response = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages: [{ role: 'user', content: prompt }],
+    const response = await getClient().chat.completions.create({
+      model: getModel(),
+      messages: [
+        { role: 'system', content: 'You are a helpful assistant. Always respond with valid JSON only, no markdown formatting.' },
+        { role: 'user', content: prompt },
+      ],
       temperature: 0.5,
-      response_format: { type: 'json_object' },
     });
 
     const content = response.choices[0]?.message?.content;
     if (!content) throw new Error('No response from AI');
 
-    return JSON.parse(content) as SkillScoreData;
+    const cleaned = content.replace(/```(?:json)?\n?/g, '').trim();
+    return JSON.parse(cleaned) as SkillScoreData;
   }
 }

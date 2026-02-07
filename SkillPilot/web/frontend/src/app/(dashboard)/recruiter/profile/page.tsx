@@ -37,17 +37,20 @@ export default function RecruiterProfilePage() {
 
       <div className="card space-y-5">
         <div>
-          <label className="mb-1.5 block text-sm font-medium text-neutral-700">Full Name</label>
+          <label htmlFor="recruiter-name" className="mb-1.5 block text-sm font-medium text-neutral-700">Full Name</label>
           <input
+            id="recruiter-name"
             type="text"
             value={form.name}
             onChange={(e) => setForm({ ...form, name: e.target.value })}
             className="input"
+            placeholder="Your full name"
           />
         </div>
         <div>
-          <label className="mb-1.5 block text-sm font-medium text-neutral-700">Bio</label>
+          <label htmlFor="recruiter-bio" className="mb-1.5 block text-sm font-medium text-neutral-700">Bio</label>
           <textarea
+            id="recruiter-bio"
             value={form.bio}
             onChange={(e) => setForm({ ...form, bio: e.target.value })}
             className="input min-h-[100px] resize-none"

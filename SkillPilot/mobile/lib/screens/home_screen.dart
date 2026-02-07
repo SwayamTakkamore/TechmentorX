@@ -4,7 +4,6 @@ import '../providers/auth_provider.dart';
 import '../providers/project_provider.dart';
 import 'auth/login_screen.dart';
 import 'project_detail_screen.dart';
-import 'chat_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

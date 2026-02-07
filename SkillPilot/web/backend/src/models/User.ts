@@ -52,7 +52,7 @@ userSchema.methods.comparePassword = async function (candidatePassword: string):
 };
 
 userSchema.set('toJSON', {
-  transform: (_doc, ret) => {
+  transform: (_doc: any, ret: any) => {
     delete ret.password;
     delete ret.refreshToken;
     return ret;

@@ -43,20 +43,24 @@ export default function ProfilePage() {
 
       <div className="card space-y-5">
         <div>
-          <label className="mb-1.5 block text-sm font-medium text-neutral-700">Full Name</label>
+          <label htmlFor="profile-name" className="mb-1.5 block text-sm font-medium text-neutral-700">Full Name</label>
           <input
+            id="profile-name"
             type="text"
             value={form.name}
             onChange={(e) => setForm({ ...form, name: e.target.value })}
             className="input"
+            placeholder="Your full name"
           />
         </div>
         <div>
-          <label className="mb-1.5 block text-sm font-medium text-neutral-700">Bio</label>
+          <label htmlFor="profile-bio" className="mb-1.5 block text-sm font-medium text-neutral-700">Bio</label>
           <textarea
+            id="profile-bio"
             value={form.bio}
             onChange={(e) => setForm({ ...form, bio: e.target.value })}
             className="input min-h-[100px] resize-none"
+            placeholder="Tell us about yourself"
             maxLength={500}
             placeholder="Tell us about yourself..."
           />
